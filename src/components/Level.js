@@ -13,15 +13,15 @@ const LEVELS = [
     },
     {
         "name": "advanced",
-        "col": 25,
-        "row": 25,
+        "col": 20,
+        "row": 20,
     }
 ];
 
 const getMines = (board) => {
     let mines = (board * MINES_PERCENTAGE) / 100;
 
-    return mines < MAX_MINES ? mines : MAX_MINES
+    return mines < MAX_MINES ? Math.floor(mines) : MAX_MINES
 }
 
 function Level({ handleBoard }) {

@@ -6,7 +6,7 @@
 
 @layer base {
   html {
-    font-family: Poppins;
+    font-family: 'Poppins';
   }
 }
 
@@ -28,4 +28,86 @@ code {
 @font-face {
   font-family: "Towards";
   src: url("../public/fonts/towards/Towards.ttf");
+}
+
+.board-8{
+  font-family: 'Poppins', 'sans-serif';
+  width: 80vw;
+  height: 80vw;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 2px;
+}
+
+.board-8 > button,
+.board-8 > div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(calc(80vw / 8) - 2px);
+  width: calc(calc(80vw / 8) - 2px);
+}
+
+
+.board-16{
+  font-family: 'Poppins', 'sans-serif';
+  width: 40rem;
+  height: 40rem;
+  grid-template-columns: repeat(16, minmax(0, 1fr));
+  gap: 2px;
+}
+
+.board-16 > button,
+.board-16 > div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(calc(40rem / 16) - 2px);
+  width: calc(calc(40rem / 16) - 2px);
+}
+
+.board-20{
+  font-family: 'Poppins', 'sans-serif';
+  width: 40rem;
+  height: 40rem;
+  grid-template-columns: repeat(20, minmax(0, 1fr));
+  gap: 2px;
+}
+
+.board-20 > button,
+.board-20 > div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(calc(40rem / 20) - 2px);
+  width: calc(calc(40rem / 20) - 2px);
+}
+
+@media (min-width: 640px) { 
+
+}
+
+@media (min-width: 768px) { 
+
+}
+
+@media (min-width: 1024px) {
+  .board-8{
+    width: 30vw;
+    height: 30vw;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 2px;
+  }
+  
+  .board-8 > button,
+  .board-8 > div{
+    height: calc(calc(30vw / 8) - 2px);
+    width: calc(calc(30vw / 8) - 2px);
+  }
+}
+
+@media (min-width: 1280px) {
+}
+
+.grid-8{
+
 }
