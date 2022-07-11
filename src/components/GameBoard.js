@@ -179,6 +179,10 @@ function GameBoard({ board, startOver }) {
 
     }, [board]);
 
+    useEffect(() => {
+        setGameWin(game.localeCompare(user_play.replaceAll('-', '*')) === 0)
+    }, [user_play, game]);
+
     const revealAllMines = () => {
         let new_user_play = user_play
         for (let i = 0; i < game.length; i++) {
@@ -394,7 +398,7 @@ function GameBoard({ board, startOver }) {
 
         for (let i = 0; i < game.length; i++) {
             if (user_play[i] === "-")
-                buttons.push((<button disabled={game_lost || game_win} onClick={() => handleBoardClick(i)} className="text-md sm:text-xl bg-opacity-10 bg-slate-200 backdrop-blur-xl border border-zinc-800 rounded-md" key={i}>{/*game[i] === "*" ? "💣" : game[i]*/}</button>))
+                buttons.push((<button disabled={game_lost || game_win} onClick={() => handleBoardClick(i)} className="text-md sm:text-xl bg-opacity-10 bg-slate-200 backdrop-blur-xl border border-zinc-800 rounded-md" key={i}>{game[i] === "*" ? "💣" : game[i]}</button>))
             else
                 buttons.push((<div className={`cursor-default text-md sm:text-xl ${game[i] === "*" ? `${i === last_play ? 'bg-red-800' : "bg-red-400"} bg-opacity-60 backdrop-blur-xl` : 'bg-white'} rounded-md border border-zinc-800`} key={i}>{game[i] === "*" ? "💣" : game[i]}</div>))
         }
