@@ -10,12 +10,11 @@ function App() {
 
   return (
     <div>
-      <div className="w-full min-h-screen bg-gradient-to-r from-blue-400 to-emerald-400">
-        <h1 className="py-4 text-5xl font-towards text-center text-white  mb-4">
+      <div className="w-full min-h-screen bg-zinc-800 pt-20">
+        <h1 className="block lg:hidden py-4 text-5xl font-towards text-center text-white  mb-10">
           Minesweeper
         </h1>
-
-        {!board ? <Level handleBoard={setBoard} /> : <GameBoard board={board} />}
+        {!board ? <Level handleBoard={setBoard} /> : <GameBoard board={board} startOver={setBoard} />}
 
         {/* <footer className="absolute bottom-0 left-0 right-0 py-4 text-center text-white font-thin">
           Powered by <a href="#tes" className="text-blue-800">@josiashod</a>
