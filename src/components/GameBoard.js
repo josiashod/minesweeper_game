@@ -351,8 +351,13 @@ function GameBoard({ board, startOver }) {
 
     return (
         <div className="overflow-x-auto flex flex-col lg:flex-row justify-center">
-            <div className={`mx-auto lg:mx-0 col-span-2 board-${board.col} border border-gray-400 grid grid-${board.col} rounded-md`}>
-                {display_board()}
+            <div className={`mx-auto lg:mx-0 border border-gray-400 rounded-md`}>
+                {(game_pause) ? (<div className={`board-${board.col} flex bg-white bg-opacity-30 backdrop-blur-xl`}>
+                    <span className="m-auto text-2xl">Suspended</span>
+                </div>) :
+                (<div className={`board-${board.col} grid grid-${board.col}`}>
+                    {display_board()}
+                </div>)}
             </div>
             <div className="self-center mx-auto lg:mx-0 lg:ml-20 mt-10 lg:mt-0 flex flex-col">
                 <h1 className="hidden lg:block py-4 text-5xl font-towards text-center text-white  mb-10">
@@ -376,7 +381,7 @@ function GameBoard({ board, startOver }) {
                 </button>
 
                 <button type="button" onClick={() => setGamePause(!game_pause) } disabled={!game_start && (game_lost || game_win)} className={`bg-opacity-10 px-6 py-3 mb-5 bg-slate-200 backdrop-blur-xl rounded-md border shadow-md ${(game_start && !(game_lost || game_win)) ? 'text-white' : 'cursor-not-allowed bg-opacity-5 text-gray-600 border-gray-600'}`}>
-                    <h5 className="font-poppins text-center text-md lg:text-lg font-light">{ game_pause ? 'Reprendre' : 'Pause'}</h5>
+                    <h5 className="font-poppins text-center text-md lg:text-lg font-light">{ game_pause ? 'Take over' : 'Pause'}</h5>
                 </button>
             </div>
             <audio src="./../../public/ringtones/Bomb.mp3" autoPlay></audio>
