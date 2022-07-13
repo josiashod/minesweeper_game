@@ -6,7 +6,7 @@ const ringtones = {
     bomb: './ringtones/Bomb.mp3',
     win: './ringtones/Applause.mp3',
 }
-
+// 🏴 flag
 // eslint-disable-next-line
 String.prototype.shuffle = function () {
     var a = this.split(''),
@@ -41,6 +41,7 @@ function putMines(board) {
 
     game = game.padStart((board.row * board.col) - board.mines, ' ') + game.padStart(board.mines, '*')
     game = countMines(board, game.shuffle())
+
     return (game)
 }
 
@@ -159,7 +160,7 @@ function index(coords, row) {
 }
 
 /**
- * getCoords - retrieve array coords
+ * getCoords - retrieve double array coords
  * 
  * @param {Number} index: the crrent index in board
  * @param {*} coords: the board dimensions
@@ -258,6 +259,7 @@ function GameBoard({ board, startOver }) {
     const [last_play, setLastPlay] = useState(null);
     const [game_lost, setGameLost] = useState(false);
     const [game_win, setGameWin] = useState(false);
+    // const [flags, setFlags] = useState(0);
 
     const audioElement = useRef();
 
@@ -266,17 +268,17 @@ function GameBoard({ board, startOver }) {
         setUserPlay("-".repeat(board.row * board.col))
     }, [board]);
 
-    // useEffect(() => {
-    //     let user_won = game.localeCompare(user_play.replaceAll('-', '*')) === 0
-    //     setGameWin(user_won)
+    useEffect(() => {
+        let user_won = game.localeCompare(user_play.replace(/-/g, '*')) === 0
+        setGameWin(user_won)
 
-    //     if (user_won)
-    //     {
-    //         audioElement.current.src = ringtones.win
-    //         audioElement.current.play()
-    //     }
+        if (user_won && game.length > 0)
+        {
+            audioElement.current.src = ringtones.win
+            audioElement.current.play()
+        }
 
-    // }, [user_play, game]);
+    }, [user_play, game]);
 
     const revealAllMines = () => {
         let new_user_play = user_play
@@ -303,6 +305,9 @@ function GameBoard({ board, startOver }) {
     }
 
     const handleBoardClick = (id) => {
+        if (user_play[id] === '|')
+            return;
+
         if (!game_start) {
             setGameStart(true)
             setTimer(1)
@@ -322,6 +327,21 @@ function GameBoard({ board, startOver }) {
         setUserPlay(reveal(game, user_play, id, board))
     }
 
+    // const handleContextMenu  = (e, id) => {
+    //     e.preventDefault()
+
+    //     if (user_play[id] === '-' && flags < board.mines)
+    //     {
+    //         setUserPlay(user_play.replaceAt(id, '|'))
+    //         setFlags(flags + 1)
+    //     }
+    //     else if (user_play[id] === '|')
+    //     {
+    //         setUserPlay(user_play.replaceAt(id, '-'))
+    //         setFlags(flags - 1)
+    //     }
+    // }
+
     useEffect(() => {
         const interval_id = (game_start && !game_pause && !game_lost && !game_win) && setInterval(() => setTimer(timer + 1), 1000);
         return () => clearInterval(interval_id);
@@ -334,14 +354,19 @@ function GameBoard({ board, startOver }) {
 
         return `${minutes < 10 ? '0' + minutes.toString() : minutes} : ${seconds < 10 ? '0' + seconds.toString() : seconds}`
     }
+
     const display_board = () => {
         let buttons = [];
 
         for (let i = 0; i < game.length; i++) {
-            if (user_play[i] === "-")
-                buttons.push((<button disabled={game_lost || game_win} onClick={() => handleBoardClick(i)} 
+            if (user_play[i] === "-" || user_play[i] === "|")
+                buttons.push((<button 
+                    disabled={game_lost || game_win} 
+                    onClick={() => handleBoardClick(i)}
+                    // onContextMenu={(e) => handleContextMenu(e, i) }
+                    // {game[i] === "*" ? "💣" : game[i]} {((game[i] === "*" && game_win) || user_play[i] === '|') && "🏴"}
                     className="border-4 border-l-zinc-400 border-t-zinc-500 border-r-zinc-600 border-b-zinc-700 text-md sm:text-xl bg-opacity-10 bg-slate-400 bg-gradient-to-tl from-zinc-700 to-zinc-500 backdrop-blur-xl rounded-sm" 
-                    key={i}>{/*game[i] === "*" ? "💣" : game[i]*/}</button>))
+                    key={i}></button>))
             else
                 buttons.push((<div className={`font-extrabold risk-${(game[i] === ' ' && game[i] !== "*") ? '0' : game[i]} cursor-default text-md sm:text-xl text-white ${game[i] === "*" ? `${i === last_play ? 'bg-red-500' : "bg-red-400"} bg-opacity-60 backdrop-blur-xl` : 'bg-opacity-10 bg-slate-400'} rounded-sm`} key={i}>{game[i] === "*" ? "💣" : game[i]}</div>))
         }
@@ -353,7 +378,7 @@ function GameBoard({ board, startOver }) {
         <div className="overflow-x-auto flex flex-col lg:flex-row justify-center">
             <div className={`mx-auto lg:mx-0 rounded-md`}>
                 {(game_pause) ? (<div className={`board-${board.col} flex bg-white bg-opacity-30 backdrop-blur-xl`}>
-                    <span className="m-auto text-2xl">Suspended</span>
+                    <span className="text-white m-auto text-2xl">Suspended</span>
                 </div>) :
                     (<div className={`board-${board.col} grid grid-${board.col}`}>
                         {display_board()}
@@ -376,7 +401,7 @@ function GameBoard({ board, startOver }) {
                     <h5 className="font-poppins text-center text-md lg:text-lg font-light">Start over</h5>
                 </button>
 
-                <button type="button" onClick={() => startOver(null)} className="bg-opacity-10 px-6 py-3 mb-5 bg-slate-200 backdrop-blur-xl rounded-md border shadow-md">
+                <button type="button" onClick={() => startOver(null)} className="hidden lg:block bg-opacity-10 px-6 py-3 mb-5 bg-slate-200 backdrop-blur-xl rounded-md border shadow-md">
                     <h5 className="font-poppins text-center text-md lg:text-lg font-light text-white">Change the difficulty</h5>
                 </button>
 
