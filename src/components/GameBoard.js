@@ -1,5 +1,11 @@
+import { useRef } from "react";
 import { useEffect, useState } from "react";
 
+/* Game ringtones */
+const ringtones = {
+    bomb: './ringtones/Bomb.mp3',
+    win: './ringtones/Applause.mp3',
+}
 
 // eslint-disable-next-line
 String.prototype.shuffle = function () {
@@ -263,12 +269,14 @@ function countMines(board_dimensions, board) {
 function GameBoard({ board, startOver }) {
     const [game, setGame] = useState("");
     const [user_play, setUserPlay] = useState("");
-    const [timer, setTimer] = useState(0)
-    const [game_start, setGameStart] = useState(false)
-    const [game_pause, setGamePause] = useState(false)
-    const [last_play, setLastPlay] = useState(null)
-    const [game_lost, setGameLost] = useState(false)
-    const [game_win, setGameWin] = useState(false)
+    const [timer, setTimer] = useState(0);
+    const [game_start, setGameStart] = useState(false);
+    const [game_pause, setGamePause] = useState(false);
+    const [last_play, setLastPlay] = useState(null);
+    const [game_lost, setGameLost] = useState(false);
+    const [game_win, setGameWin] = useState(false);
+
+    const audioElement = useRef();
 
     useEffect(() => {
         setGame(putMines(board));
@@ -316,6 +324,8 @@ function GameBoard({ board, startOver }) {
         setLastPlay(id)
 
         if (game[id] === "*") {
+            audioElement.current.src = ringtones.bomb
+            audioElement.current.play()
             setGameLost(true)
             revealAllMines()
             return;
@@ -384,8 +394,8 @@ function GameBoard({ board, startOver }) {
                     <h5 className="font-poppins text-center text-md lg:text-lg font-light">{ game_pause ? 'Take over' : 'Pause'}</h5>
                 </button>
             </div>
-            <audio src="./../../public/ringtones/Bomb.mp3" autoPlay></audio>
 
+            <audio ref={audioElement} />
         </div>
     )
 }
