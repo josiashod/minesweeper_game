@@ -10,6 +10,18 @@
   }
 }
 
+@layer utilities {
+  .risk-1 {
+    @apply font-bold;
+    @apply text-blue-400;
+  }
+  .risk-3 {
+    @apply font-bold;
+    @apply text-orange-500;
+  }
+}
+
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -24,6 +36,21 @@ code {
     monospace;
 }
 
+.risk-1{
+  color: #d4d4d4;
+}
+
+.risk-2{
+  color: #c4b5fd;
+}
+
+.risk-3{
+  color: #fca5a5;
+}
+
+.risk-4{
+  color: #fdba74;
+}
 
 @font-face {
   font-family: "Towards";
@@ -35,7 +62,7 @@ code {
   width: 80vw;
   height: 80vw;
   grid-template-columns: repeat(8, minmax(0, 1fr));
-  gap: 2px;
+  gap: 1px;
 }
 
 .board-8 > button,
@@ -43,8 +70,8 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(calc(80vw / 8) - 2px);
-  width: calc(calc(80vw / 8) - 2px);
+  height: calc(calc(80vw / 8) - 1px);
+  width: calc(calc(80vw / 8) - 1px);
 }
 
 
@@ -53,7 +80,7 @@ code {
   width: 40rem;
   height: 40rem;
   grid-template-columns: repeat(16, minmax(0, 1fr));
-  gap: 2px;
+  gap: 1px;
 }
 
 .board-16 > button,
@@ -61,8 +88,8 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(calc(40rem / 16) - 2px);
-  width: calc(calc(40rem / 16) - 2px);
+  height: calc(calc(40rem / 16) - 1px);
+  width: calc(calc(40rem / 16) - 1px);
 }
 
 .board-20{
@@ -70,7 +97,7 @@ code {
   width: 40rem;
   height: 40rem;
   grid-template-columns: repeat(20, minmax(0, 1fr));
-  gap: 2px;
+  gap: 1px;
 }
 
 .board-20 > button,
@@ -78,8 +105,8 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(calc(40rem / 20) - 2px);
-  width: calc(calc(40rem / 20) - 2px);
+  height: calc(calc(40rem / 20) - 1px);
+  width: calc(calc(40rem / 20) - 1px);
 }
 
 @media (min-width: 640px) { 
@@ -95,19 +122,15 @@ code {
     width: 30vw;
     height: 30vw;
     grid-template-columns: repeat(8, minmax(0, 1fr));
-    gap: 2px;
+    gap: 1px;
   }
   
   .board-8 > button,
   .board-8 > div{
-    height: calc(calc(30vw / 8) - 2px);
-    width: calc(calc(30vw / 8) - 2px);
+    height: calc(calc(30vw / 8) - 1px);
+    width: calc(calc(30vw / 8) - 1px);
   }
 }
 
 @media (min-width: 1280px) {
-}
-
-.grid-8{
-
 }

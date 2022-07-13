@@ -66,101 +66,84 @@ function isValidCoord(coords, limitCoords) {
  * @param {*} board: the board caracteristics
  * @returns 
  */
-function reveal(game_board, user_board, id, board){
+function reveal(game_board, user_board, id, board) {
     let new_user_board = user_board
 
     if (game_board[id] === "*")
         return new_user_board
 
-        new_user_board = user_board.replaceAt(id, game_board[id])
+    new_user_board = user_board.replaceAt(id, game_board[id])
 
-        if (game_board[id] === " " && user_board[id] === "-")
-        {
-            let i = getCoords(id, board).row;
-            let j = getCoords(id, board).col;
+    if (game_board[id] === " " && user_board[id] === "-") {
+        let i = getCoords(id, board).row;
+        let j = getCoords(id, board).col;
 
-            // check if there is a mine in NW -> NORD-WEST
-            if (isValidCoord({row: (i - 1), col: (j - 1)}, board))
-            {
-                let idx = index({row: (i - 1), col: (j - 1)}, board.row)
-                if (game_board[idx] !== "*")
-                {
-                    new_user_board = reveal(game_board, new_user_board, idx, board)
-                }
-            }
-
-            // check if there is a mine in NE -> NORD-EAST
-            if (isValidCoord({row: (i - 1), col: (j + 1)}, board))
-            {
-                let idx = index({row: (i - 1), col: (j + 1)}, board.row)
-                if (game_board[idx] !== "*")
-                {
-                    new_user_board = reveal(game_board, new_user_board, idx, board)
-                }
-            }
-
-            // check if there is a mine in N -> NORD
-            if (isValidCoord({row: (i - 1), col: (j)}, board))
-            {
-                let idx = index({row: (i - 1), col: (j)}, board.row)
-                if (game_board[idx] !== "*")
-                {
-                    new_user_board = reveal(game_board, new_user_board, idx, board)
-                }
-            }
-
-            // // check if there is a mine in W -> WEST
-            if (isValidCoord({row: (i), col: (j - 1)}, board))
-            {
-                let idx = index({row: (i), col: (j - 1)}, board.row)
-                if (game_board[idx] !== "*")
-                {
-                    new_user_board = reveal(game_board, new_user_board, idx, board)
-                }
-            }
-
-            // check if there is a mine in E -> EAST
-            if (isValidCoord({row: (i), col: (j + 1)}, board))
-            {
-                let idx = index({row: (i), col: (j + 1)}, board.row)
-                if (game_board[idx] !== "*")
-                {
-                    new_user_board = reveal(game_board, new_user_board, idx, board)
-                }
-            }
-
-            // check if there is a mine in SW -> SUD-WEST
-            if (isValidCoord({row: (i + 1), col: (j - 1)}, board))
-            {
-                let idx = index({row: (i + 1), col: (j - 1)}, board.row)
-                if (game_board[idx] !== "*")
-                {
-                    new_user_board = reveal(game_board, new_user_board, idx, board)
-                }
-            }
-
-            // check if there is a mine in SE -> SUD-EAST
-            if (isValidCoord({row: (i + 1), col: (j + 1)}, board))
-            {
-                let idx = index({row: (i + 1), col: (j + 1)}, board.row)
-                if (game_board[idx] !== "*")
-                {
-                    new_user_board = reveal(game_board, new_user_board, idx, board)
-                }
-            }
-
-            // check if there is a mine in S -> SUD
-            if (isValidCoord({row: (i + 1), col: (j)}, board))
-            {
-                let idx = index({row: (i + 1), col: (j)}, board.row)
-                if (game_board[idx] !== "*")
-                {
-                    new_user_board = reveal(game_board, new_user_board, idx, board)
-                }
+        // check if there is a mine in NW -> NORD-WEST
+        if (isValidCoord({ row: (i - 1), col: (j - 1) }, board)) {
+            let idx = index({ row: (i - 1), col: (j - 1) }, board.row)
+            if (game_board[idx] !== "*") {
+                new_user_board = reveal(game_board, new_user_board, idx, board)
             }
         }
 
-        return (new_user_board)
+        // check if there is a mine in NE -> NORD-EAST
+        if (isValidCoord({ row: (i - 1), col: (j + 1) }, board)) {
+            let idx = index({ row: (i - 1), col: (j + 1) }, board.row)
+            if (game_board[idx] !== "*") {
+                new_user_board = reveal(game_board, new_user_board, idx, board)
+            }
+        }
+
+        // check if there is a mine in N -> NORD
+        if (isValidCoord({ row: (i - 1), col: (j) }, board)) {
+            let idx = index({ row: (i - 1), col: (j) }, board.row)
+            if (game_board[idx] !== "*") {
+                new_user_board = reveal(game_board, new_user_board, idx, board)
+            }
+        }
+
+        // // check if there is a mine in W -> WEST
+        if (isValidCoord({ row: (i), col: (j - 1) }, board)) {
+            let idx = index({ row: (i), col: (j - 1) }, board.row)
+            if (game_board[idx] !== "*") {
+                new_user_board = reveal(game_board, new_user_board, idx, board)
+            }
+        }
+
+        // check if there is a mine in E -> EAST
+        if (isValidCoord({ row: (i), col: (j + 1) }, board)) {
+            let idx = index({ row: (i), col: (j + 1) }, board.row)
+            if (game_board[idx] !== "*") {
+                new_user_board = reveal(game_board, new_user_board, idx, board)
+            }
+        }
+
+        // check if there is a mine in SW -> SUD-WEST
+        if (isValidCoord({ row: (i + 1), col: (j - 1) }, board)) {
+            let idx = index({ row: (i + 1), col: (j - 1) }, board.row)
+            if (game_board[idx] !== "*") {
+                new_user_board = reveal(game_board, new_user_board, idx, board)
+            }
+        }
+
+        // check if there is a mine in SE -> SUD-EAST
+        if (isValidCoord({ row: (i + 1), col: (j + 1) }, board)) {
+            let idx = index({ row: (i + 1), col: (j + 1) }, board.row)
+            if (game_board[idx] !== "*") {
+                new_user_board = reveal(game_board, new_user_board, idx, board)
+            }
+        }
+
+        // check if there is a mine in S -> SUD
+        if (isValidCoord({ row: (i + 1), col: (j) }, board)) {
+            let idx = index({ row: (i + 1), col: (j) }, board.row)
+            if (game_board[idx] !== "*") {
+                new_user_board = reveal(game_board, new_user_board, idx, board)
+            }
+        }
+    }
+
+    return (new_user_board)
 }
 
 /**
@@ -283,9 +266,17 @@ function GameBoard({ board, startOver }) {
         setUserPlay("-".repeat(board.row * board.col))
     }, [board]);
 
-    useEffect(() => {
-        setGameWin(game.localeCompare(user_play.replaceAll('-', '*')) === 0)
-    }, [user_play, game]);
+    // useEffect(() => {
+    //     let user_won = game.localeCompare(user_play.replaceAll('-', '*')) === 0
+    //     setGameWin(user_won)
+
+    //     if (user_won)
+    //     {
+    //         audioElement.current.src = ringtones.win
+    //         audioElement.current.play()
+    //     }
+
+    // }, [user_play, game]);
 
     const revealAllMines = () => {
         let new_user_play = user_play
@@ -296,7 +287,6 @@ function GameBoard({ board, startOver }) {
 
         setUserPlay(new_user_play)
     }
-
 
     const reset = () => {
         setGame(putMines(board, board.mines));
@@ -313,8 +303,7 @@ function GameBoard({ board, startOver }) {
     }
 
     const handleBoardClick = (id) => {
-        if (!game_start)
-        {
+        if (!game_start) {
             setGameStart(true)
             setTimer(1)
         }
@@ -339,21 +328,22 @@ function GameBoard({ board, startOver }) {
     }, [timer, game_start, game_pause, game_lost, game_win]);
 
     const getTimer = (time) => {
-        // calculate time left
+        // calculate time spent
         const minutes = Math.floor(time / 60);
         const seconds = time - minutes * 60;
 
         return `${minutes < 10 ? '0' + minutes.toString() : minutes} : ${seconds < 10 ? '0' + seconds.toString() : seconds}`
     }
-
     const display_board = () => {
         let buttons = [];
 
         for (let i = 0; i < game.length; i++) {
             if (user_play[i] === "-")
-                buttons.push((<button disabled={game_lost || game_win} onClick={() => handleBoardClick(i)} className="text-md sm:text-xl bg-opacity-10 bg-slate-200 backdrop-blur-xl border border-zinc-800 rounded-md" key={i}>{game[i] === "*" ? "💣" : game[i]}</button>))
+                buttons.push((<button disabled={game_lost || game_win} onClick={() => handleBoardClick(i)} 
+                    className="border-4 border-l-zinc-400 border-t-zinc-500 border-r-zinc-600 border-b-zinc-700 text-md sm:text-xl bg-opacity-10 bg-slate-400 bg-gradient-to-tl from-zinc-700 to-zinc-500 backdrop-blur-xl rounded-sm" 
+                    key={i}>{/*game[i] === "*" ? "💣" : game[i]*/}</button>))
             else
-                buttons.push((<div className={`cursor-default text-md sm:text-xl ${game[i] === "*" ? `${i === last_play ? 'bg-red-500' : "bg-red-400"} bg-opacity-60 backdrop-blur-xl` : 'bg-white'} rounded-md border border-zinc-800`} key={i}>{game[i] === "*" ? "💣" : game[i]}</div>))
+                buttons.push((<div className={`font-extrabold risk-${(game[i] === ' ' && game[i] !== "*") ? '0' : game[i]} cursor-default text-md sm:text-xl text-white ${game[i] === "*" ? `${i === last_play ? 'bg-red-500' : "bg-red-400"} bg-opacity-60 backdrop-blur-xl` : 'bg-opacity-10 bg-slate-400'} rounded-sm`} key={i}>{game[i] === "*" ? "💣" : game[i]}</div>))
         }
 
         return (buttons)
@@ -361,13 +351,13 @@ function GameBoard({ board, startOver }) {
 
     return (
         <div className="overflow-x-auto flex flex-col lg:flex-row justify-center">
-            <div className={`mx-auto lg:mx-0 border border-gray-400 rounded-md`}>
+            <div className={`mx-auto lg:mx-0 rounded-md`}>
                 {(game_pause) ? (<div className={`board-${board.col} flex bg-white bg-opacity-30 backdrop-blur-xl`}>
                     <span className="m-auto text-2xl">Suspended</span>
                 </div>) :
-                (<div className={`board-${board.col} grid grid-${board.col}`}>
-                    {display_board()}
-                </div>)}
+                    (<div className={`board-${board.col} grid grid-${board.col}`}>
+                        {display_board()}
+                    </div>)}
             </div>
             <div className="self-center mx-auto lg:mx-0 lg:ml-20 mt-10 lg:mt-0 flex flex-col">
                 <h1 className="hidden lg:block py-4 text-5xl font-towards text-center text-white  mb-10">
@@ -376,8 +366,8 @@ function GameBoard({ board, startOver }) {
                 <div className="mb-4 flex-grow">
                     <div className="text-white flex flex-col">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="self-center w-14 h-14" viewBox="0 0 16 16">
-                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
-                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
                         </svg>
                         <span className="self-center text-2xl">{getTimer(timer)}</span>
                     </div>
@@ -390,8 +380,8 @@ function GameBoard({ board, startOver }) {
                     <h5 className="font-poppins text-center text-md lg:text-lg font-light text-white">Change the difficulty</h5>
                 </button>
 
-                <button type="button" onClick={() => setGamePause(!game_pause) } disabled={!game_start && (game_lost || game_win)} className={`bg-opacity-10 px-6 py-3 mb-5 bg-slate-200 backdrop-blur-xl rounded-md border shadow-md ${(game_start && !(game_lost || game_win)) ? 'text-white' : 'cursor-not-allowed bg-opacity-5 text-gray-600 border-gray-600'}`}>
-                    <h5 className="font-poppins text-center text-md lg:text-lg font-light">{ game_pause ? 'Take over' : 'Pause'}</h5>
+                <button type="button" onClick={() => setGamePause(!game_pause)} disabled={!game_start && (game_lost || game_win)} className={`bg-opacity-10 px-6 py-3 mb-5 bg-slate-200 backdrop-blur-xl rounded-md border shadow-md ${(game_start && !(game_lost || game_win)) ? 'text-white' : 'cursor-not-allowed bg-opacity-5 text-gray-600 border-gray-600'}`}>
+                    <h5 className="font-poppins text-center text-md lg:text-lg font-light">{game_pause ? 'Take over' : 'Pause'}</h5>
                 </button>
             </div>
 
