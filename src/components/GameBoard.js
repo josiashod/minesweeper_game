@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+
 // eslint-disable-next-line
 String.prototype.shuffle = function () {
     var a = this.split(''),
@@ -25,27 +26,16 @@ String.prototype.replaceAt = function (index, replacement) {
 /**
  * putMines - Put mines inside the board
  * 
- * @param {object} board: The board dimensions
- * @param {Number} mines: The nmber of mines needed 
+ * @param {object} board: The board caracteristics
  * 
  * @returns {String} the board with mines inside
  */
-function putMines(board, mines) {
-    let game = ""
+function putMines(board) {
+    let game = ''
 
-    for (let i = 0; i < (board.row * board.col); i++) {
-        let insert_mines = Math.floor((Math.random() * (2 - 0) + 0));
-
-        if (insert_mines && mines > 0) {
-            game += "*";
-            mines--;
-        }
-        else
-            game += " ";
-    }
+    game = game.padStart((board.row * board.col) - board.mines, ' ') + game.padStart(board.mines, '*')
     game = countMines(board, game.shuffle())
     return (game)
-    // return (game.replaceAll("*", "💣"))
 }
 
 /**
@@ -59,6 +49,112 @@ function putMines(board, mines) {
 function isValidCoord(coords, limitCoords) {
     return ((coords.row >= 0 && coords.row < limitCoords.row) &&
         (coords.col >= 0 && coords.col < limitCoords.col))
+}
+
+/**
+ * reveal - This function reveal hidden case for the user
+ * 
+ * @param {String} game_board: The game solution 
+ * @param {*} user_board: represents what the user played
+ * @param {*} id: the index to reveal
+ * @param {*} board: the board caracteristics
+ * @returns 
+ */
+function reveal(game_board, user_board, id, board){
+    let new_user_board = user_board
+
+    if (game_board[id] === "*")
+        return new_user_board
+
+        new_user_board = user_board.replaceAt(id, game_board[id])
+
+        if (game_board[id] === " " && user_board[id] === "-")
+        {
+            let i = getCoords(id, board).row;
+            let j = getCoords(id, board).col;
+
+            // check if there is a mine in NW -> NORD-WEST
+            if (isValidCoord({row: (i - 1), col: (j - 1)}, board))
+            {
+                let idx = index({row: (i - 1), col: (j - 1)}, board.row)
+                if (game_board[idx] !== "*")
+                {
+                    new_user_board = reveal(game_board, new_user_board, idx, board)
+                }
+            }
+
+            // check if there is a mine in NE -> NORD-EAST
+            if (isValidCoord({row: (i - 1), col: (j + 1)}, board))
+            {
+                let idx = index({row: (i - 1), col: (j + 1)}, board.row)
+                if (game_board[idx] !== "*")
+                {
+                    new_user_board = reveal(game_board, new_user_board, idx, board)
+                }
+            }
+
+            // check if there is a mine in N -> NORD
+            if (isValidCoord({row: (i - 1), col: (j)}, board))
+            {
+                let idx = index({row: (i - 1), col: (j)}, board.row)
+                if (game_board[idx] !== "*")
+                {
+                    new_user_board = reveal(game_board, new_user_board, idx, board)
+                }
+            }
+
+            // // check if there is a mine in W -> WEST
+            if (isValidCoord({row: (i), col: (j - 1)}, board))
+            {
+                let idx = index({row: (i), col: (j - 1)}, board.row)
+                if (game_board[idx] !== "*")
+                {
+                    new_user_board = reveal(game_board, new_user_board, idx, board)
+                }
+            }
+
+            // check if there is a mine in E -> EAST
+            if (isValidCoord({row: (i), col: (j + 1)}, board))
+            {
+                let idx = index({row: (i), col: (j + 1)}, board.row)
+                if (game_board[idx] !== "*")
+                {
+                    new_user_board = reveal(game_board, new_user_board, idx, board)
+                }
+            }
+
+            // check if there is a mine in SW -> SUD-WEST
+            if (isValidCoord({row: (i + 1), col: (j - 1)}, board))
+            {
+                let idx = index({row: (i + 1), col: (j - 1)}, board.row)
+                if (game_board[idx] !== "*")
+                {
+                    new_user_board = reveal(game_board, new_user_board, idx, board)
+                }
+            }
+
+            // check if there is a mine in SE -> SUD-EAST
+            if (isValidCoord({row: (i + 1), col: (j + 1)}, board))
+            {
+                let idx = index({row: (i + 1), col: (j + 1)}, board.row)
+                if (game_board[idx] !== "*")
+                {
+                    new_user_board = reveal(game_board, new_user_board, idx, board)
+                }
+            }
+
+            // check if there is a mine in S -> SUD
+            if (isValidCoord({row: (i + 1), col: (j)}, board))
+            {
+                let idx = index({row: (i + 1), col: (j)}, board.row)
+                if (game_board[idx] !== "*")
+                {
+                    new_user_board = reveal(game_board, new_user_board, idx, board)
+                }
+            }
+        }
+
+        return (new_user_board)
 }
 
 /**
@@ -157,11 +253,13 @@ function countMines(board_dimensions, board) {
             }
         }
     }
-
     return (board)
 }
 
-
+/**
+ * GameBoard component
+ * @returns JSX
+ */
 function GameBoard({ board, startOver }) {
     const [game, setGame] = useState("");
     const [user_play, setUserPlay] = useState("");
@@ -173,10 +271,8 @@ function GameBoard({ board, startOver }) {
     const [game_win, setGameWin] = useState(false)
 
     useEffect(() => {
-        setGame(putMines(board, board.mines));
-
+        setGame(putMines(board));
         setUserPlay("-".repeat(board.row * board.col))
-
     }, [board]);
 
     useEffect(() => {
@@ -189,169 +285,10 @@ function GameBoard({ board, startOver }) {
             if (game[i] === "*")
                 new_user_play = new_user_play.replaceAt(i, game[i])
         }
-        return (new_user_play)
+
+        setUserPlay(new_user_play)
     }
 
-    const revealEmptyCaseArea = (id, user_game) => {
-        if (game[id] === " ") {
-            let i = getCoords(id, board).row;
-            let j = getCoords(id, board).col;
-
-            // check if there is a mine in NW -> NORD-WEST
-            if (isValidCoord({ row: (i - 1), col: (j - 1) }, board)) {
-                let idx = index({ row: (i - 1), col: (j - 1) }, board.row)
-                if (game[idx] !== "*")
-                    user_game = user_game.replaceAt(idx, game[idx]);
-            }
-
-            // check if there is a mine in NE -> NORD-EAST
-            if (isValidCoord({ row: (i - 1), col: (j + 1) }, board)) {
-                let idx = index({ row: (i - 1), col: (j + 1) }, board.row)
-                if (game[idx] !== "*")
-                    user_game = user_game.replaceAt(idx, game[idx]);
-            }
-
-            // check if there is a mine in N -> NORD
-            if (isValidCoord({ row: (i - 1), col: (j) }, board)) {
-                let idx = index({ row: (i - 1), col: (j) }, board.row)
-                if (game[idx] !== "*")
-                    user_game = user_game.replaceAt(idx, game[idx]);
-            }
-
-            // // check if there is a mine in W -> WEST
-            if (isValidCoord({ row: (i), col: (j - 1) }, board)) {
-                let idx = index({ row: (i), col: (j - 1) }, board.row)
-                if (game[idx] !== "*")
-                    user_game = user_game.replaceAt(idx, game[idx]);
-            }
-
-            // check if there is a mine in E -> EAST
-            if (isValidCoord({ row: (i), col: (j + 1) }, board)) {
-                let idx = index({ row: (i), col: (j + 1) }, board.row)
-                if (game[idx] !== "*")
-                    user_game = user_game.replaceAt(idx, game[idx]);
-            }
-
-            // check if there is a mine in SW -> SUD-WEST
-            if (isValidCoord({ row: (i + 1), col: (j - 1) }, board)) {
-                let idx = index({ row: (i + 1), col: (j - 1) }, board.row)
-                if (game[idx] !== "*")
-                    user_game = user_game.replaceAt(idx, game[idx]);
-            }
-
-            // check if there is a mine in SE -> SUD-EAST
-            if (isValidCoord({ row: (i + 1), col: (j + 1) }, board)) {
-                let idx = index({ row: (i + 1), col: (j + 1) }, board.row)
-                if (game[idx] !== "*")
-                    user_game = user_game.replaceAt(idx, game[idx]);
-            }
-
-            // check if there is a mine in S -> SUD
-            if (isValidCoord({ row: (i + 1), col: (j) }, board)) {
-                let idx = index({ row: (i + 1), col: (j) }, board.row)
-                if (game[idx] !== "*")
-                    user_game = user_game.replaceAt(idx, game[idx]);
-            }
-        }
-
-        return (user_game)
-    }
-
-    const reveal = (id, user_game) => {
-        if (game[id] === "*") {
-            // alert('perdu')
-            setGameLost(true)
-            return revealAllMines()
-        }
-
-        user_game = user_game.replaceAt(id, game[id])
-        if (game[id] === " " && user_play[id] === "-") {
-            let i = getCoords(id, board).row;
-            let j = getCoords(id, board).col;
-
-            // check if there is a mine in NW -> NORD-WEST
-            if (isValidCoord({ row: (i - 1), col: (j - 1) }, board)) {
-                let idx = index({ row: (i - 1), col: (j - 1) }, board.row)
-                if (game[idx] !== "*") {
-                    if (game[idx] === " ")
-                        user_game = revealEmptyCaseArea(idx, user_game);
-                    user_game = user_game.replaceAt(idx, game[idx]);
-                }
-            }
-
-            // check if there is a mine in NE -> NORD-EAST
-            if (isValidCoord({ row: (i - 1), col: (j + 1) }, board)) {
-                let idx = index({ row: (i - 1), col: (j + 1) }, board.row)
-                if (game[idx] !== "*") {
-                    if (game[idx] === " ")
-                        user_game = revealEmptyCaseArea(idx, user_game);
-                    user_game = user_game.replaceAt(idx, game[idx]);
-                }
-            }
-
-            // check if there is a mine in N -> NORD
-            if (isValidCoord({ row: (i - 1), col: (j) }, board)) {
-                let idx = index({ row: (i - 1), col: (j) }, board.row)
-                if (game[idx] !== "*") {
-                    if (game[idx] === " ")
-                        user_game = revealEmptyCaseArea(idx, user_game);
-                    user_game = user_game.replaceAt(idx, game[idx]);
-                }
-            }
-
-            // // check if there is a mine in W -> WEST
-            if (isValidCoord({ row: (i), col: (j - 1) }, board)) {
-                let idx = index({ row: (i), col: (j - 1) }, board.row)
-                if (game[idx] !== "*") {
-                    if (game[idx] === " ")
-                        user_game = revealEmptyCaseArea(idx, user_game);
-                    user_game = user_game.replaceAt(idx, game[idx]);
-                }
-            }
-
-            // check if there is a mine in E -> EAST
-            if (isValidCoord({ row: (i), col: (j + 1) }, board)) {
-                let idx = index({ row: (i), col: (j + 1) }, board.row)
-                if (game[idx] !== "*") {
-                    if (game[idx] === " ")
-                        user_game = revealEmptyCaseArea(idx, user_game);
-                    user_game = user_game.replaceAt(idx, game[idx]);
-                }
-            }
-
-            // check if there is a mine in SW -> SUD-WEST
-            if (isValidCoord({ row: (i + 1), col: (j - 1) }, board)) {
-                let idx = index({ row: (i + 1), col: (j - 1) }, board.row)
-                if (game[idx] !== "*") {
-                    if (game[idx] === " ")
-                        user_game = revealEmptyCaseArea(idx, user_game);
-                    user_game = user_game.replaceAt(idx, game[idx]);
-                }
-            }
-
-            // check if there is a mine in SE -> SUD-EAST
-            if (isValidCoord({ row: (i + 1), col: (j + 1) }, board)) {
-                let idx = index({ row: (i + 1), col: (j + 1) }, board.row)
-                if (game[idx] !== "*") {
-                    if (game[idx] === " ")
-                        user_game = revealEmptyCaseArea(idx, user_game);
-                    user_game = user_game.replaceAt(idx, game[idx]);
-                }
-            }
-
-            // check if there is a mine in S -> SUD
-            if (isValidCoord({ row: (i + 1), col: (j) }, board)) {
-                let idx = index({ row: (i + 1), col: (j) }, board.row)
-                if (game[idx] !== "*") {
-                    if (game[idx] === " ")
-                        user_game = revealEmptyCaseArea(idx, user_game);
-                    user_game = user_game.replaceAt(idx, game[idx]);
-                }
-            }
-        }
-
-        return (user_game)
-    }
 
     const reset = () => {
         setGame(putMines(board, board.mines));
@@ -377,7 +314,13 @@ function GameBoard({ board, startOver }) {
             setGamePause(!game_pause)
 
         setLastPlay(id)
-        setUserPlay(reveal(id, user_play))
+
+        if (game[id] === "*") {
+            setGameLost(true)
+            revealAllMines()
+            return;
+        }
+        setUserPlay(reveal(game, user_play, id, board))
     }
 
     useEffect(() => {
@@ -391,7 +334,7 @@ function GameBoard({ board, startOver }) {
         const seconds = time - minutes * 60;
 
         return `${minutes < 10 ? '0' + minutes.toString() : minutes} : ${seconds < 10 ? '0' + seconds.toString() : seconds}`
-      };
+    }
 
     const display_board = () => {
         let buttons = [];
@@ -400,14 +343,14 @@ function GameBoard({ board, startOver }) {
             if (user_play[i] === "-")
                 buttons.push((<button disabled={game_lost || game_win} onClick={() => handleBoardClick(i)} className="text-md sm:text-xl bg-opacity-10 bg-slate-200 backdrop-blur-xl border border-zinc-800 rounded-md" key={i}>{game[i] === "*" ? "💣" : game[i]}</button>))
             else
-                buttons.push((<div className={`cursor-default text-md sm:text-xl ${game[i] === "*" ? `${i === last_play ? 'bg-red-800' : "bg-red-400"} bg-opacity-60 backdrop-blur-xl` : 'bg-white'} rounded-md border border-zinc-800`} key={i}>{game[i] === "*" ? "💣" : game[i]}</div>))
+                buttons.push((<div className={`cursor-default text-md sm:text-xl ${game[i] === "*" ? `${i === last_play ? 'bg-red-500' : "bg-red-400"} bg-opacity-60 backdrop-blur-xl` : 'bg-white'} rounded-md border border-zinc-800`} key={i}>{game[i] === "*" ? "💣" : game[i]}</div>))
         }
 
         return (buttons)
     }
 
     return (
-        <div className="overflow-x-auto mb-10 flex flex-col lg:flex-row justify-center">
+        <div className="overflow-x-auto flex flex-col lg:flex-row justify-center">
             <div className={`mx-auto lg:mx-0 col-span-2 board-${board.col} border border-gray-400 grid grid-${board.col} rounded-md`}>
                 {display_board()}
             </div>
@@ -436,6 +379,8 @@ function GameBoard({ board, startOver }) {
                     <h5 className="font-poppins text-center text-md lg:text-lg font-light">{ game_pause ? 'Reprendre' : 'Pause'}</h5>
                 </button>
             </div>
+            <audio src="./../../public/ringtones/Bomb.mp3" autoPlay></audio>
+
         </div>
     )
 }
