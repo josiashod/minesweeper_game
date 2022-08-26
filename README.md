@@ -1,6 +1,6 @@
 # Minesweeper GAME 🔥
 
-## A Blazing Fast Multipage Portfolio Template for Developers 🚀
+Minesweeper is a puzzle video game where the goal is to locate mines hidden in a grid representing a virtual minefield, with the only indication being the number of mines in the adjacent areas
 
 ## [Demo Link](https://josh-minesweeper.netlify.app/) 🔗
 
