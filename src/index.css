@@ -21,6 +21,9 @@
   }
 }
 
+:root{
+  --gap: 2px;
+}
 
 body {
   margin: 0;
@@ -86,8 +89,8 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(calc(80vw / 8) - 2px);
-  width: calc(calc(80vw / 8) - 2px);
+  height: calc(calc(80vw / 8) - var(--gap));
+  width: calc(calc(80vw / 8) - var(--gap));
 }
 
 
@@ -96,7 +99,7 @@ code {
   width: 40rem;
   height: 40rem;
   grid-template-columns: repeat(16, minmax(0, 1fr));
-  gap: 2px;
+  gap: var(--gap);
 }
 
 .board-16 > button,
@@ -104,8 +107,8 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(calc(40rem / 16) - 2px);
-  width: calc(calc(40rem / 16) - 2px);
+  height: calc(calc(40rem / 16) - var(--gap));
+  width: calc(calc(40rem / 16) - var(--gap));
 }
 
 .board-20{
@@ -113,7 +116,7 @@ code {
   width: 40rem;
   height: 40rem;
   grid-template-columns: repeat(20, minmax(0, 1fr));
-  gap: 2px;
+  gap: var(--gap);
 }
 
 .board-20 > button,
@@ -121,8 +124,8 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(calc(40rem / 20) - 2px);
-  width: calc(calc(40rem / 20) - 2px);
+  height: calc(calc(40rem / 20) - var(--gap));
+  width: calc(calc(40rem / 20) - var(--gap));
 }
 
 @media (min-width: 640px) { 
@@ -138,13 +141,13 @@ code {
     width: 30vw;
     height: 30vw;
     grid-template-columns: repeat(8, minmax(0, 1fr));
-    gap: 2px;
+    gap: var(--gap);
   }
   
   .board-8 > button,
   .board-8 > div{
-    height: calc(calc(30vw / 8) - 2px);
-    width: calc(calc(30vw / 8) - 2px);
+    height: calc(calc(30vw / 8) - var(--gap));
+    width: calc(calc(30vw / 8) - var(--gap));
   }
 }
 

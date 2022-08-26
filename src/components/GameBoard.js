@@ -169,11 +169,15 @@ function GameBoard({ board, startOver }) {
     const [game_pause, setGamePause] = useState(false);
     const [game_over, setGameOver] = useState(false);
     const [flags, setFlags] = useState(0);
+    const [gameHasbeenReset, setGameReset] = useState(false)
+
+
     const audioElement = useRef();
     const revealedRef = useRef([]);
     revealedRef.current = [];
 
     useEffect(() => {
+        document.querySelector(':root').style.setProperty('--gap', '2px')
         setGame(constructGame(board));
     }, [board]);
 
@@ -210,6 +214,7 @@ function GameBoard({ board, startOver }) {
         // for (let i = 0; i < game.length; i++) {
         //     revealedRef.current[i].setAttribute('data-revealed', "false")
         // }
+        setGameReset(true)
         setGame(constructGame(board, board.mines));
 
         if (game_start)
@@ -232,6 +237,32 @@ function GameBoard({ board, startOver }) {
      */
     const handleReveal = (id) => {
         reveal(id);
+    }
+
+    const handlePause = () => {
+        let rootStyle = document.querySelector(':root').style
+
+        if (!game_pause)
+        {
+            rootStyle.setProperty('--gap', '0px')
+            for (let i = 0; i < game.length; i++) {
+                if (!revealedRef.current[i].classList.contains('revealed')){
+                    revealedRef.current[i].setAttribute('disabled', true)
+                }
+                continue;
+            }
+            setGamePause(true)
+        }
+        else{
+            rootStyle.setProperty('--gap', '2px')
+            for (let i = 0; i < game.length; i++) {
+                if (!revealedRef.current[i].classList.contains('revealed')){
+                    revealedRef.current[i].removeAttribute('disabled')
+                }
+                continue;
+            }
+            setGamePause(false)
+        }
     }
 
     const click = (id) => {
@@ -347,6 +378,12 @@ function GameBoard({ board, startOver }) {
         return () => clearInterval(interval_id);
     }, [time, game_start, game_pause, game_over]);
 
+
+    useEffect(() => {
+        const interval_id = (gameHasbeenReset) && setInterval(() => setGameReset(false), 5);
+        return () => clearInterval(interval_id);
+    }, [gameHasbeenReset]);
+
     const timer = (time) => {
         // calculate time spent
         const minutes = Math.floor(time / 60);
@@ -365,6 +402,7 @@ function GameBoard({ board, startOver }) {
                 gameHasStart={game_start}
                 handleGameStart={setGameStart}
                 gameIsOver={game_over}
+                gameisOnPause={game_pause}
                 innerRef={addToRef}
                 reveal={() => handleReveal(i)}
                 triggerBomb={triggerBomb}
@@ -380,9 +418,7 @@ function GameBoard({ board, startOver }) {
     return (
         <div className="overflow-x-auto flex flex-col lg:flex-row justify-center">
             <div className={`mx-auto lg:mx-0 rounded-md`}>
-                {(game_pause) ? (<div className={`board-${board.col} flex bg-white bg-opacity-30 backdrop-blur-xl`}>
-                    <span className="text-white m-auto text-2xl">Suspended</span>
-                </div>) :
+                {(gameHasbeenReset) ? (<div className={`board-${board.col} flex`}></div>) :
                     (<div className={`board-${board.col} grid grid-${board.col}`}>
                         {create_buttons()}
                     </div>)}
@@ -397,7 +433,7 @@ function GameBoard({ board, startOver }) {
                             <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
                             <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
                         </svg>
-                        <span className="self-center text-2xl">{timer(time)}</span>
+                        <span className="self-center text-2xl">{timer(time)} {game_pause && "⏸️"}</span>
                     </div>
                 </div>
                 <button type="button" onClick={reset} disabled={!game_start} className={`bg-opacity-10 px-6 py-3 mb-5 bg-slate-200 backdrop-blur-xl rounded-md border shadow-md ${game_start ? 'text-white' : 'cursor-not-allowed bg-opacity-5 text-gray-600 border-gray-600'}`}>
@@ -408,7 +444,7 @@ function GameBoard({ board, startOver }) {
                     <h5 className="font-poppins text-center text-md lg:text-lg font-light text-white">Change the difficulty</h5>
                 </button>
 
-                <button type="button" onClick={() => setGamePause(!game_pause)} disabled={!game_start && (game_over)} className={`bg-opacity-10 px-6 py-3 mb-5 bg-slate-200 backdrop-blur-xl rounded-md border shadow-md ${(game_start && !(game_over)) ? 'text-white' : 'cursor-not-allowed bg-opacity-5 text-gray-600 border-gray-600'}`}>
+                <button type="button" onClick={() => handlePause()} disabled={!game_start && (game_over)} className={`bg-opacity-10 px-6 py-3 mb-5 bg-slate-200 backdrop-blur-xl rounded-md border shadow-md ${(game_start && !(game_over)) ? 'text-white' : 'cursor-not-allowed bg-opacity-5 text-gray-600 border-gray-600'}`}>
                     <h5 className="font-poppins text-center text-md lg:text-lg font-light">{game_pause ? 'Take over' : 'Pause'}</h5>
                 </button>
             </div>
