@@ -5,7 +5,7 @@
 ## [Demo Link](https://josh-minesweeper.netlify.app/) 🔗
 
 <div align="center">
-  <img src="https://i.postimg.cc/CxZXqhWM/ezgif-com-video-to-gif-1.gif" alt="Dopefolio Demo" width="100%" />
+  <img src="https://josh-image-uploader.herokuapp.com/image-1661530142281.gif" alt="Minesweeper GAME Demo" width="100%" />
   <br>
 </div>
 
