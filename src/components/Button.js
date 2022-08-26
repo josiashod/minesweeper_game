@@ -38,25 +38,22 @@ const Button = ({ char,
     }
 
     const handleClick = (e) => {
-        if (!flaged)
-        {
-            setRevealed(true)
+        setRevealed(true)
 
-            if (!gameHasStart)
-                handleGameStart(true);
+        if (!gameHasStart)
+            handleGameStart(true);
 
-            if (gameIsOver)
-                return;
+        if (gameIsOver)
+            return;
 
-            if (char === "*")
-                triggerBomb();
+        if (char === "*")
+            triggerBomb();
 
-            if (char === " " && !revealed)
-                reveal();
+        if (char === " " && !revealed)
+            reveal();
 
-            setClicked(true)
-            setTimeout(() => checksForWin(), 10);
-        }
+        setClicked(true)
+        setTimeout(() => checksForWin(), 10);
     }
 
     const getClassname = () => {

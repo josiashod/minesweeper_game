@@ -65,6 +65,18 @@ function Level({ handleBoard }) {
                         <span className="ml-2 text-3xl font-light tracking-tight">💣</span>
                     </div>
                 </button>
+                <button onClick={() => setBoard(LEVELS[1])} key={LEVELS[1].name} className="block lg:hidden p-2 max-w-sm bg-opacity-10 bg-slate-200 backdrop-blur-xl rounded-lg border shadow-md sm:p-8">
+                    <h5 className="font-towards text-center capitalize mb-3 text-lg lg:text-2xl font-bold text-white">Play</h5>
+                    <div className="mb-3 flex justify-center text-white">
+                        <span className="text-3xl font-light tracking-tight">{ LEVELS[1].row }</span>
+                        <span className="mx-2 text-xl self-center font-normal text-white">x</span>
+                        <span className="text-3xl font-light tracking-tight">{ LEVELS[1].col }</span>
+                    </div>
+                    <div className="mb-3 flex justify-center text-white">
+                        <span className="text-3xl font-light tracking-tight">{ getMines(LEVELS[1].row * LEVELS[1].col) }</span>
+                        <span className="ml-2 text-3xl font-light tracking-tight">💣</span>
+                    </div>
+                </button>
             </div>
         </div>
     );

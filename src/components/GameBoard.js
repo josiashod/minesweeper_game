@@ -174,7 +174,7 @@ function GameBoard({ board, startOver }) {
 
     const audioElement = useRef();
     const revealedRef = useRef([]);
-    revealedRef.current = [];
+    // revealedRef.current = [];
 
     useEffect(() => {
         document.querySelector(':root').style.setProperty('--gap', '2px')
@@ -210,23 +210,23 @@ function GameBoard({ board, startOver }) {
         }
     }
 
-    const reset = () => {
-        // for (let i = 0; i < game.length; i++) {
-        //     revealedRef.current[i].setAttribute('data-revealed', "false")
-        // }
-        setGameReset(true)
-        setGame(constructGame(board, board.mines));
+    // const reset = () => {
+    //     // for (let i = 0; i < game.length; i++) {
+    //     //     revealedRef.current[i].setAttribute('data-revealed', "false")
+    //     // }
+    //     setGameReset(true)
+    //     setGame(constructGame(board, board.mines));
 
-        if (game_start)
-            setGameStart(false);
-        if (game_pause)
-            setGamePause(false);
-        if (game_over)
-            setGameOver(false);
+    //     if (game_start)
+    //         setGameStart(false);
+    //     if (game_pause)
+    //         setGamePause(false);
+    //     if (game_over)
+    //         setGameOver(false);
 
-        setTime(0);
-        setFlags(0);
-    }
+    //     setTime(0);
+    //     setFlags(0);
+    // }
 
     const putFlag = (num) => {
         setFlags(flags + num);
@@ -360,17 +360,19 @@ function GameBoard({ board, startOver }) {
 
         audioElement.current.src = ringtones.bomb
         audioElement.current.play()
-        setGameOver(true)
 
         setTimeout(() => {
+
             for (let i = 0; i < game.length; i++) {
-                if (game[i] === "*" && revealedRef.current[i].classList.contains('revealed'))
-                {    
+                if (game[i] === "*" && !revealedRef.current[i].classList.contains('revealed'))
+                {
                     revealedRef.current[i].click();
                 }
-                revealedRef.current[i].setAttribute('disabled', game_over);
+                revealedRef.current[i].setAttribute('disabled', true);
             }
         }, 10);
+        
+        setGameOver(true)
     }
 
     useEffect(() => {
@@ -418,10 +420,7 @@ function GameBoard({ board, startOver }) {
     return (
         <div className="overflow-x-auto flex flex-col lg:flex-row justify-center">
             <div className={`mx-auto lg:mx-0 rounded-md`}>
-                {(gameHasbeenReset) ? (<div className={`board-${board.col} flex`}></div>) :
-                    (<div className={`board-${board.col} grid grid-${board.col}`}>
-                        {create_buttons()}
-                    </div>)}
+                <div className={`board-${board.col} grid grid-${board.col}`}>{create_buttons()}</div>
             </div>
             <div className="self-center mx-auto lg:mx-0 lg:ml-20 mt-10 lg:mt-0 flex flex-col">
                 <h1 className="hidden lg:block py-4 text-5xl font-towards text-center text-white  mb-10">
@@ -436,12 +435,12 @@ function GameBoard({ board, startOver }) {
                         <span className="self-center text-2xl">{timer(time)} {game_pause && "⏸️"}</span>
                     </div>
                 </div>
-                <button type="button" onClick={reset} disabled={!game_start} className={`bg-opacity-10 px-6 py-3 mb-5 bg-slate-200 backdrop-blur-xl rounded-md border shadow-md ${game_start ? 'text-white' : 'cursor-not-allowed bg-opacity-5 text-gray-600 border-gray-600'}`}>
+                {/* <button type="button" onClick={reset} disabled={!game_start} className={`bg-opacity-10 px-6 py-3 mb-5 bg-slate-200 backdrop-blur-xl rounded-md border shadow-md ${game_start ? 'text-white' : 'cursor-not-allowed bg-opacity-5 text-gray-600 border-gray-600'}`}>
                     <h5 className="font-poppins text-center text-md lg:text-lg font-light">Start over</h5>
-                </button>
+                </button> */}
 
-                <button type="button" onClick={() => startOver(null)} className="hidden lg:block bg-opacity-10 px-6 py-3 mb-5 bg-slate-200 backdrop-blur-xl rounded-md border shadow-md">
-                    <h5 className="font-poppins text-center text-md lg:text-lg font-light text-white">Change the difficulty</h5>
+                <button type="button" onClick={() => startOver(null)} className="bg-opacity-10 px-6 py-3 mb-5 bg-slate-200 backdrop-blur-xl rounded-md border shadow-md">
+                    <h5 className="font-poppins text-center text-md lg:text-lg font-light text-white">Change the difficulty </h5>
                 </button>
 
                 <button type="button" onClick={() => handlePause()} disabled={!game_start && (game_over)} className={`bg-opacity-10 px-6 py-3 mb-5 bg-slate-200 backdrop-blur-xl rounded-md border shadow-md ${(game_start && !(game_over)) ? 'text-white' : 'cursor-not-allowed bg-opacity-5 text-gray-600 border-gray-600'}`}>
