@@ -68,7 +68,7 @@ const Button = ({ char,
     }
 
     return (
-        <button ref={innerRef} onContextMenu={(e) => handleContexteMenu(e)} onClick={handleClick} type="button" className={getClassname()}>{/*revealed && */(flaged ? "🏴" : (char === "*") ? "💣" : char)}</button>
+        <button ref={innerRef} onContextMenu={(e) => handleContexteMenu(e)} onClick={handleClick} type="button" className={getClassname()}>{revealed && (flaged ? "🏴" : (char === "*") ? "💣" : char)}</button>
     )
 }
 
