@@ -38,6 +38,9 @@ const Button = ({ char,
     }
 
     const handleClick = (e) => {
+        if (flaged)
+            return;
+ 
         setRevealed(true)
 
         if (!gameHasStart)
