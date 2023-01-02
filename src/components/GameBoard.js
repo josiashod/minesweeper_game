@@ -169,7 +169,7 @@ function GameBoard({ board, startOver }) {
     const [game_pause, setGamePause] = useState(false);
     const [game_over, setGameOver] = useState(false);
     const [flags, setFlags] = useState(0);
-    const [gameHasbeenReset, setGameReset] = useState(false)
+    const [buttons_key, setGamePlayed] = useState(0)
 
 
     const audioElement = useRef();
@@ -210,23 +210,21 @@ function GameBoard({ board, startOver }) {
         }
     }
 
-    // const reset = () => {
-    //     // for (let i = 0; i < game.length; i++) {
-    //     //     revealedRef.current[i].setAttribute('data-revealed', "false")
-    //     // }
-    //     setGameReset(true)
-    //     setGame(constructGame(board, board.mines));
+    const reset = () => {
+        setGame(constructGame(board));
+        setGamePlayed(buttons_key + game.length)
 
-    //     if (game_start)
-    //         setGameStart(false);
-    //     if (game_pause)
-    //         setGamePause(false);
-    //     if (game_over)
-    //         setGameOver(false);
+        if (game_start)
+            setGameStart(false);
+        if (game_pause)
+            setGamePause(false);
+        if (game_over)
+            setGameOver(false);
 
-    //     setTime(0);
-    //     setFlags(0);
-    // }
+        setTime(0);
+        setFlags(0);
+        revealedRef.current = []
+    }
 
     const putFlag = (num) => {
         setFlags(flags + num);
@@ -380,12 +378,6 @@ function GameBoard({ board, startOver }) {
         return () => clearInterval(interval_id);
     }, [time, game_start, game_pause, game_over]);
 
-
-    useEffect(() => {
-        const interval_id = (gameHasbeenReset) && setInterval(() => setGameReset(false), 5);
-        return () => clearInterval(interval_id);
-    }, [gameHasbeenReset]);
-
     const timer = (time) => {
         // calculate time spent
         const minutes = Math.floor(time / 60);
@@ -399,7 +391,7 @@ function GameBoard({ board, startOver }) {
 
         for (let i = 0; i < game.length; i++) {
             buttons.push(<Button 
-                key={i}
+                key={i + buttons_key}
                 char={game[i]}
                 gameHasStart={game_start}
                 handleGameStart={setGameStart}
@@ -435,9 +427,10 @@ function GameBoard({ board, startOver }) {
                         <span className="self-center text-2xl">{timer(time)} {game_pause && "⏸️"}</span>
                     </div>
                 </div>
-                {/* <button type="button" onClick={reset} disabled={!game_start} className={`bg-opacity-10 px-6 py-3 mb-5 bg-slate-200 backdrop-blur-xl rounded-md border shadow-md ${game_start ? 'text-white' : 'cursor-not-allowed bg-opacity-5 text-gray-600 border-gray-600'}`}>
+
+                <button type="button" onClick={() => reset()} disabled={!game_start} className={`bg-opacity-10 px-6 py-3 mb-5 bg-slate-200 backdrop-blur-xl rounded-md border shadow-md ${game_start ? 'text-white' : 'cursor-not-allowed bg-opacity-5 text-gray-600 border-gray-600'}`}>
                     <h5 className="font-poppins text-center text-md lg:text-lg font-light">Start over</h5>
-                </button> */}
+                </button>
 
                 <button type="button" onClick={() => startOver(null)} className="bg-opacity-10 px-6 py-3 mb-5 bg-slate-200 backdrop-blur-xl rounded-md border shadow-md">
                     <h5 className="font-poppins text-center text-md lg:text-lg font-light text-white">Change the difficulty </h5>
