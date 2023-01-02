@@ -17,7 +17,7 @@ function App() {
         {!board ? <Level handleBoard={setBoard} /> : <GameBoard board={board} startOver={setBoard} />}
 
         <footer className="mt-8 text-center text-white font-thin">
-          Powered by <a href="https://github.com/josiashod" className="text-orange-300">@josiashod</a>
+          Powered by <a href="https://github.com/josiashod" target="_blank" rel="noopener noreferrer" className="text-orange-300">@josiashod</a>
         </footer>
       </div>
     </div>
