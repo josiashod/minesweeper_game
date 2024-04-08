@@ -199,6 +199,7 @@ function GameBoard({ board, startOver }) {
         if (matches === board.mines || safeArea === (game.length - board.mines))
         {
             audioElement.current.src = ringtones.win;
+            audioElement.current.currentTime = 0;
             audioElement.current.play();
             setGameOver(true);
         }
@@ -357,6 +358,7 @@ function GameBoard({ board, startOver }) {
             return;
 
         audioElement.current.src = ringtones.bomb
+        audioElement.current.currentTime = 0
         audioElement.current.play()
 
         setTimeout(() => {
