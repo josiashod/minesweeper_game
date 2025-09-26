@@ -69,7 +69,7 @@ const Button = ({ char,
             if (revealed)
                 classList = `font-extrabold risk-${(char === ' ' && char !== "*") ? '0' : char} cursor-default text-md sm:text-xl text-white ${char === "*" ? `${clicked ? 'bg-red-500' : "bg-red-400"} bg-opacity-60 backdrop-blur-xl` : 'bg-opacity-10 bg-slate-400'} rounded-sm revealed`;
             else
-                classList = 'border-4 border-l-zinc-400 border-t-zinc-500 border-r-zinc-600 border-b-zinc-700 text-md sm:text-xl bg-opacity-10 bg-slate-400 bg-gradient-to-tl from-zinc-700 to-zinc-500 backdrop-blur-xl rounded-sm';
+                classList = 'text-md sm:text-xl bg-opacity-10 bg-slate-400 bg-gradient-to-tl from-zinc-700 to-zinc-500 backdrop-blur-xl rounded-sm';
             
             if (flaged)
                 classList += " flaged";
