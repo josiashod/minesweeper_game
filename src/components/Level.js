@@ -18,6 +18,12 @@ const LEVELS = [
     }
 ];
 
+const LEVEL_LABELS = {
+    beginner: "Débutant",
+    intermediate: "Intermédiaire",
+    advanced: "Expert",
+};
+
 const getMines = (board) => {
     let mines = (board * MINES_PERCENTAGE) / 100;
 
@@ -34,49 +40,34 @@ function Level({ handleBoard }) {
         })
     }
     return (
-        <div className="">
-            <h1 className="hidden lg:block py-4 text-5xl font-towards text-center text-white  mb-10">
+        <div>
+            <h1 className="hidden lg:block py-4 text-7xl font-towards text-center text-white mb-3">
                 Minesweeper
             </h1>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+            <p className="mx-auto mb-10 max-w-xl text-center text-sm sm:text-base" style={{ color: "#a7a9a5" }}>
+                Choisis une difficulté et nettoie le terrain sans faire exploser la partie.
+            </p>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                 {LEVELS.map((level) => (
-                    <button onClick={() => setBoard(level)} key={level.name} className="hidden lg:block p-2 max-w-sm bg-opacity-10 bg-slate-200 backdrop-blur-xl rounded-lg border shadow-md sm:p-8">
-                        <h5 className="font-towards text-center capitalize mb-3 text-lg lg:text-2xl font-bold text-white">{level.name}</h5>
-                        <div className="mb-3 flex justify-center text-white">
-                            <span className="text-3xl font-light tracking-tight">{ level.row }</span>
-                            <span className="mx-2 text-xl self-center font-normal text-white">x</span>
-                            <span className="text-3xl font-light tracking-tight">{ level.col }</span>
+                    <button onClick={() => setBoard(level)} key={level.name} className="level-card group">
+                        <div className="mb-8 flex items-center justify-between gap-4">
+                            <h5 className="text-left text-xl font-semibold text-white">{LEVEL_LABELS[level.name]}</h5>
+                            <span className="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white" style={{ border: "1px solid rgba(123, 125, 122, 0.35)", background: "rgba(123, 125, 122, 0.14)" }}>
+                                Play
+                            </span>
                         </div>
-                        <div className="mb-3 flex justify-center text-white">
-                            <span className="text-3xl font-light tracking-tight">{ getMines(level.row * level.col) }</span>
-                            <span className="ml-2 text-3xl font-light tracking-tight">💣</span>
+                        <div className="grid grid-cols-2 gap-3 text-left">
+                            <div className="level-stat">
+                                <span className="text-xs uppercase tracking-wide" style={{ color: "#a7a9a5" }}>Grille</span>
+                                <strong>{ level.row } x { level.col }</strong>
+                            </div>
+                            <div className="level-stat">
+                                <span className="text-xs uppercase tracking-wide" style={{ color: "#a7a9a5" }}>Mines</span>
+                                <strong>{ getMines(level.row * level.col) }</strong>
+                            </div>
                         </div>
                     </button>
                 ))}
-                <button onClick={() => setBoard(LEVELS[0])} key={LEVELS[0].name} className="block lg:hidden p-2 max-w-sm bg-opacity-10 bg-slate-200 backdrop-blur-xl rounded-lg border shadow-md sm:p-8">
-                    <h5 className="font-towards text-center capitalize mb-3 text-lg lg:text-2xl font-bold text-white">Play</h5>
-                    <div className="mb-3 flex justify-center text-white">
-                        <span className="text-3xl font-light tracking-tight">{ LEVELS[0].row }</span>
-                        <span className="mx-2 text-xl self-center font-normal text-white">x</span>
-                        <span className="text-3xl font-light tracking-tight">{ LEVELS[0].col }</span>
-                    </div>
-                    <div className="mb-3 flex justify-center text-white">
-                        <span className="text-3xl font-light tracking-tight">{ getMines(LEVELS[0].row * LEVELS[0].col) }</span>
-                        <span className="ml-2 text-3xl font-light tracking-tight">💣</span>
-                    </div>
-                </button>
-                <button onClick={() => setBoard(LEVELS[1])} key={LEVELS[1].name} className="block lg:hidden p-2 max-w-sm bg-opacity-10 bg-slate-200 backdrop-blur-xl rounded-lg border shadow-md sm:p-8">
-                    <h5 className="font-towards text-center capitalize mb-3 text-lg lg:text-2xl font-bold text-white">Play</h5>
-                    <div className="mb-3 flex justify-center text-white">
-                        <span className="text-3xl font-light tracking-tight">{ LEVELS[1].row }</span>
-                        <span className="mx-2 text-xl self-center font-normal text-white">x</span>
-                        <span className="text-3xl font-light tracking-tight">{ LEVELS[1].col }</span>
-                    </div>
-                    <div className="mb-3 flex justify-center text-white">
-                        <span className="text-3xl font-light tracking-tight">{ getMines(LEVELS[1].row * LEVELS[1].col) }</span>
-                        <span className="ml-2 text-3xl font-light tracking-tight">💣</span>
-                    </div>
-                </button>
             </div>
         </div>
     );

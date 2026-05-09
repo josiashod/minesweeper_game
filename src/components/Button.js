@@ -63,13 +63,13 @@ const Button = ({ char,
         let classList = "";
 
         if (gameisOnPause){
-            classList = 'border-4 border-zinc-600 text-md sm:text-xl bg-zinc-600 backdrop-blur-xl rounded-sm paused';
+            classList = 'mine-cell paused';
         }
         else{
             if (revealed)
-                classList = `font-extrabold risk-${(char === ' ' && char !== "*") ? '0' : char} cursor-default text-md sm:text-xl text-white ${char === "*" ? `${clicked ? 'bg-red-500' : "bg-red-400"} bg-opacity-60 backdrop-blur-xl` : 'bg-opacity-10 bg-slate-400'} rounded-sm revealed`;
+                classList = `mine-cell revealed risk-${(char === ' ' && char !== "*") ? '0' : char} ${char === "*" ? `${clicked ? 'mine-cell-bomb-active' : "mine-cell-bomb"}` : ''}`;
             else
-                classList = 'text-md sm:text-xl bg-opacity-10 bg-stone-200 rounded-sm';
+                classList = 'mine-cell hidden-cell';
             
             if (flaged)
                 classList += " flaged";
